@@ -18,9 +18,9 @@
                             <div v-for="product in cart"
                                 class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom">
                                 <a class="d-inline-block flex-shrink-0 me-3" href="#">
-                                    <img v-if="product.images && product.images.Caminho !== ''" class="img-fluid"
+                                    <img v-if="product.images && product.images.Caminho !== ''" class=""
                                         width="100" :src="product.images.Caminho" :alt="product.Produto">
-                                    <img v-else class="img-fluid" src="/public/assets/img/front/logo.png" width="100"
+                                    <img v-else class="" src="/public/assets/img/front/logo.png" width="100"
                                         :alt="product.Produto">
                                 </a>
                                 <div class="d-flex flex-column flex-sm-row col">

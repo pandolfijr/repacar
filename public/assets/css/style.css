@@ -800,6 +800,10 @@ progress {
 .img-fluid {
     max-width: 100%;
     height: auto;
+    max-height: 20em;
+    max-width: 20em;
+    min-height: 20em;
+    min-width: 20em;
 }
 
 .img-thumbnail {
@@ -28758,9 +28762,17 @@ img {
     font-size: 0.8em;
 }
 
-@media (min-width: 300px) and (max-width: 576px){
+@media (min-width: 300px) and (max-width: 576px) {
     .cart-quantity {
         right: 5em;
+        top: 2em;
+    }
+
+    .img-fluid {
+        max-height: 13em;
+        max-width: 13em;
+        min-height: 13em;
+        min-width: 13em;
     }
 }
 

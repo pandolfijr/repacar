@@ -12,9 +12,9 @@
                             <div class="col-4">
                                 <!-- Imagem -->
                                 <a href="#">
-                                    <img v-if="product.images && product.images.Caminho !== ''" class="img-fluid"
+                                    <img v-if="product.images && product.images.Caminho !== ''" class=""
                                         :src="product.images.Caminho" :alt="product.Produto">
-                                    <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
+                                    <img v-else class="" src="/public/assets/img/front/logo.png"
                                         :alt="product.Produto">
                                 </a>
                             </div>

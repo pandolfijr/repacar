@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="author" content="pxdraft">
+    <meta name="author" content="REPACAR">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <meta name="keywords" content="ShopApp - eCommerce Bootstrap 5 Template">
-    <meta name="description" content="ShopApp - eCommerce Bootstrap 5 Template">
-    <title>Repacar | E-Commerce</title>
-    <link rel="shortcut icon" href="../../assets/img/fashion/logo.png">
+    <meta name="keywords" content="REPACAR, reparos hidráulicos, materiais hidráulicos, soluções hidráulicas, qualidade em hidráulica, inovação hidráulica, atendimento diferenciado, produtos hidráulicos de alta qualidade">
+    <meta name="description" content="A REPACAR oferece soluções inovadoras e de alta qualidade em reparos e materiais hidráulicos, com foco na eficiência, lucratividade e satisfação do cliente.">
+    <title>REPACAR | Soluções em Reparos e Materiais Hidráulicos</title>
+    <link rel="shortcut icon" href="{{ asset('assets/img/front/logo.png') }}">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 </head>
 

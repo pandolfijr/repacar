@@ -60,9 +60,9 @@
                             <li v-for="product in cart" class="list-group-item p-3">
                                 <div class="row g-2">
                                     <div class="col-3 col-md-2">
-                                        <img v-if="product.images && product.images.Caminho !== ''" class="img-fluid"
+                                        <img v-if="product.images && product.images.Caminho !== ''" class=""
                                             :src="product.images.Caminho" :alt="product.Produto">
-                                        <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
+                                        <img v-else class="" src="/public/assets/img/front/logo.png"
                                             :alt="product.Produto">
                                     </div>
                                     <div class="col">

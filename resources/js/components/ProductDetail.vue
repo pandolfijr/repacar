@@ -1,5 +1,5 @@
 <template>
-
+<!--
     <main>
         <MiniCart :cart="cart" @remove-product="removeProduct" @clear-cart="clearCart"></MiniCart>
         <AppMenu :cart="cart"></AppMenu>
@@ -22,7 +22,7 @@
             </div>
             <section class="product-details py-6">
                 <div class="container">
-                    <div class="row"><!-- Product Gallery -->
+                    <div class="row">
                         <div class="col-lg-6 lightbox-gallery product-gallery">
                             <div class="swiper swiper_gallery">
                                 <div class="swiper-wrapper">
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Product Gallery --><!-- Product Details -->
+
                         <div class="col-lg-6 ps-lg-5">
                             <div class="product-detail pt-4 pt-lg-0">
                                 <div class="products-brand pb-2"><span>Brand name</span></div>
@@ -133,11 +133,11 @@
                                 <div class="pt-4"><img class="img-fluid"
                                         src="../../assets/img/fashion/payment-details.png" title="" alt=""></div>
                             </div>
-                        </div><!-- End Product Details -->
+                        </div>
                     </div>
                 </div>
-            </section><!-- End Product Details --><!-- Product Tabs -->
-            <!-- <section class="pb-6 py-md-6 pb-lg-10 pt-lg-5">
+            </section>
+             <section class="pb-6 py-md-6 pb-lg-10 pt-lg-5">
                 <div class="container">
                   <div class="product-tabs">
                     <ul class="nav product-nav-tabs" id="myTab" role="tablist">
@@ -584,9 +584,9 @@
                     <div class="swiper-arrow-style-02 swiper-prev swiper-prev-02"><i class="bi bi-chevron-left"></i></div>
                   </div>
                 </div>
-              </section> -->
+              </section>
         </main>
-        <!-- <section class="section" style="margin-bottom: -7em; margin-top: 6em;">
+         <section class="section" style="margin-bottom: -7em; margin-top: 6em;">
             <div class="container">
                 <div class="row justify-content-center mb-4">
                     <div class="col-lg-6 text-center">
@@ -685,10 +685,9 @@
                     </div>
                 </div>
             </div>
-        </section> -->
-        <!-- End blog -->
+        </section>
     </main>
-    <!-- <footer-site></footer-site> -->
+     <footer-site></footer-site> -->
 </template>
 
 <script>

@@ -42,7 +42,7 @@ class ProductRepositoryImpl implements ProductRepository
     public function getCategories(): Result
     {
         try {
-            $categories = ProductCategory::with('subCategory')->get();
+            $categories = ProductCategory::with('subCategory')->orderBy('Categoria')->get();
             return Result::success(['categories' => $categories]);
         } catch (\Exception $e) {
             return Result::error(

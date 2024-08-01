@@ -6,31 +6,25 @@
 
         <section class="section" style="margin-top: 8em;">
             <div class="container">
+                <div class="row" style="text-align: center;">
+                    <h6 class="mb-3 text-gray-400">Nossa Missão</h6>
+                    <h2 class="mb-4">Sobre a Repacar</h2>
+                </div>
                 <div class="row align-items-center">
-                    <div class="col-lg-6 my-3"><img src="/public/images/tubos.png" alt="" title="" class="img-fluid">
+                    <div class="col-lg-6 my-3">
+                        <img src="/public/images/tubos.png" alt="" title="" class="">
                     </div>
-                    <div class="col-lg-6 ps-lg-8 my-3">
-                        <h6 class="mb-3 text-gray-400">Nossa Missão</h6>
-                        <h2 class="mb-4">Sobre a Repacar</h2>
-                        <p>A REPACAR é uma empresa séria, confiável e competente, especializada em reparos e
-                            materiais
-                            hidráulicos.</p>
+                    <div class="col-lg-6 ps-lg-8 my-3" style="text-align: justify;">
 
-                        <p> Oferecemos produtos de alta qualidade que garantem maior lucratividade para nossos
-                            clientes,
-                            respaldados por nosso know-how em fabricação.</p>
+                        <p>A REPACAR é sinônimo de seriedade, confiabilidade e competência no setor de reparos e materiais hidráulicos. Com anos de experiência e uma equipe altamente qualificada, nos orgulhamos em oferecer soluções de alta qualidade que atendem às necessidades de nossos clientes e superam suas expectativas.</p>
 
-                        <p> Estamos sempre atentos às novas tendências de mercado, visando otimizar nossos processos
-                            de
-                            produção e distribuição. Investimos em funcionários qualificados, infraestrutura
-                            moderna,
-                            equipamentos de produção avançados e ferramentas de marketing, como folders e websites,
-                            para
-                            melhorar nosso relacionamento com os clientes e fortalecer uma parceria profissional que
-                            beneficia todos os envolvidos.</p>
+                        <p> Oferecemos uma ampla gama de produtos hidráulicos de excelência, desenvolvidos com tecnologia de ponta e materiais de alta durabilidade. Cada item do nosso catálogo é projetado para garantir maior eficiência e lucratividade aos nossos clientes, refletindo nosso profundo conhecimento em fabricação e nossa dedicação à qualidade.</p>
 
-                        <p>Nossa filosofia de trabalho é baseada no respeito aos clientes, oferecendo um atendimento
-                            diferenciado e produtos de excelente qualidade.</p>
+                        <p> Na REPACAR, estamos sempre em sintonia com as mais recentes tendências e inovações do mercado. Nosso compromisso com a melhoria contínua nos leva a constantemente otimizar nossos processos de produção e distribuição. Investimos em modernas infraestruturas, equipamentos de última geração e uma equipe de profissionais qualificados, garantindo assim a máxima eficiência e qualidade em cada etapa.</p>
+
+                        <p>Acreditamos que um bom relacionamento com o cliente é fundamental para o sucesso. Por isso, utilizamos ferramentas de marketing avançadas, como folders informativos e um website intuitivo e completo, para facilitar a comunicação e fortalecer as parcerias profissionais. Nosso objetivo é oferecer um atendimento personalizado e atencioso, que faça cada cliente se sentir valorizado e bem atendido.</p>
+
+                        <p>Nossa filosofia de trabalho é construída sobre uma base sólida de respeito e compromisso com nossos clientes. Estamos dedicados a oferecer um atendimento diferenciado, sempre com cortesia e prontidão, e a fornecer produtos de excelente qualidade que atendam às demandas mais exigentes. Na REPACAR, você encontra mais do que uma fornecedora de materiais hidráulicos: encontra um parceiro confiável para o seu sucesso.</p>
                     </div>
                 </div>
             </div>

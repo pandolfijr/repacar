@@ -26,13 +26,13 @@
         <section class="section">
             <div class="container">
                 <div class="row justify-content-center section-heading">
-                    <div v-if="Object.values(products).length > 1" class="col-lg-6 text-center">
+                    <div v-if="Object.values(products).length > 0" class="col-lg-6 text-center">
                         <p class="fs-6 m-0">Produtos</p>
                         <h3 class="h2 mt-2">Novos Produtos</h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div v-if="Object.values(products).length > 1" class="row g-2 g-sm-3 g-lg-4">
+                    <div v-if="Object.values(products).length > 0" class="row g-2 g-sm-3 g-lg-4">
                         <div v-for="product in products" :key="product.id" class="col-6 col-md-4 col-lg-3">
                             <div class="product-card-1">
                                 <div class="product-card-image">
@@ -42,13 +42,13 @@
                                         </a>
                                     </div>
                                     <div class="product-media">
-                                        <img v-if="product.images && product.images.Caminho !== ''" class="img-fluid"
-                                            :src="product.images.Caminho"
-                                            style="max-height: 20em; max-width: 20em; min-height: 20em; min-width: 20em;"
-                                            :alt="product.Produto">
-                                        <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
-                                            style="max-height: 20em; max-width: 20em; min-height: 20em; min-width: 20em;"
-                                            :alt="product.Produto">
+                                        <a @click="openQuickView(product)">
+                                            <img v-if="product.images && product.images.Caminho !== ''"
+                                                class="img-fluid" :src="product.images.Caminho" style=""
+                                                :alt="product.Produto">
+                                            <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
+                                                style="" :alt="product.Produto">
+                                        </a>
                                         <div class="product-cart-btn">
                                             <button @click="addToCart(product, product.quantity ?? 1)"
                                                 class="btn btn-success btn-sm w-100">

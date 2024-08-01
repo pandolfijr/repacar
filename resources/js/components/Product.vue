@@ -3,7 +3,7 @@
     <main>
         <MiniCart :cart="cart" @remove-product="removeProduct" @clear-cart="clearCart"></MiniCart>
         <AppMenu :cart="cart"></AppMenu>
-        <section class="section" style="margin-bottom: -7em; margin-top: 6em;">
+        <section class="section" style="margin-bottom: -7em; margin-top: 8em;">
             <div class="container">
                 <div class="row justify-content-center mb-4">
                     <div class="col-lg-6 text-center">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="row g-2 g-sm-3 g-lg-4">
+                    <div v-if="Object.values(products).length > 0" class="row g-2 g-sm-3 g-lg-4">
                         <div v-for="product in products" :key="product.id" class="col-6 col-md-4 col-lg-3">
                             <div class="product-card-1">
                                 <div class="product-card-image">
@@ -46,14 +46,13 @@
                                         </a>
                                     </div>
                                     <div class="product-media">
-
-                                        <img v-if="product.images && product.images.Caminho !== ''" class="img-fluid"
-                                            :src="product.images.Caminho"
-                                            style="max-height: 20em; max-width: 20em; min-height: 20em; min-width: 20em;"
-                                            :alt="product.Produto">
-                                        <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
-                                            style="max-height: 20em; max-width: 20em; min-height: 20em; min-width: 20em;"
-                                            :alt="product.Produto">
+                                        <a @click="openQuickView(product)">
+                                            <img v-if="product.images && product.images.Caminho !== ''"
+                                                class="img-fluid" :src="product.images.Caminho" style=""
+                                                :alt="product.Produto">
+                                            <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
+                                                style="" :alt="product.Produto">
+                                        </a>
                                         <div class="product-cart-btn">
                                             <button @click="addToCart(product, product.quantity ?? 1)"
                                                 class="btn btn-success btn-sm w-100">
@@ -68,9 +67,9 @@
                                         <a @click="openQuickView(product)">{{ product.Produto }}</a>
                                     </h6>
                                     <!-- <div class="product-price">
-                                        <span class="text-success"> R$ {{ product.Valor }} valor<small></small>
-                                        </span>
-                                    </div> -->
+                                            <span class="text-success"> R$ {{ product.Valor }} valor<small></small>
+                                            </span>
+                                        </div> -->
                                 </div>
 
                                 <div class="product-card-info">
@@ -94,13 +93,15 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Modal -->
                         <QuickView v-if="selectedProduct" :product="selectedProduct" @close="selectedProduct = null"
                             :cart="cart" @add-to-cart="addToCart" @remove-product="removeProduct"
                             @load-products="loadProductsFromLocalStorage" @increment-quantity="incrementQuantity"
                             @decrement-quantity="decrementQuantity">
                         </QuickView>
+                    </div>
+                    <div v-else class="row g-2 g-sm-3 g-lg-4 text-center">
+                        <h1>Nenhum produto encontrado</h1>
                     </div>
                 </div>
             </div>
