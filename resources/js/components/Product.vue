@@ -11,9 +11,11 @@
                             <form class="position-relative w-100" @submit.prevent="handleSubmit">
                                 <div class="input-group mb-4">
                                     <input class="form-control shadow-none" type="text" name="search" v-model="filter"
-                                        style="border-radius: 2em 0 0 2em; background-color: white;" placeholder="O que você está procurando?">
+                                        style="border-radius: 2em 0 0 2em; background-color: white;"
+                                        placeholder="O que você está procurando?">
                                     <button type="button" class="btn shadow-none"
-                                        style="border-radius: 0 2em 2em 0;background-color:white; border-color: #e3e9ef;" @click="getProducts()">
+                                        style="border-radius: 0 2em 2em 0;background-color:white; border-color: #e3e9ef;"
+                                        @click="getProducts()">
                                         <i class="fi-search"></i>
                                     </button>
                                 </div>
@@ -74,9 +76,11 @@
                                 <div class="product-card-info">
                                     <div class="product-meta small">Cód: {{ product.Codigo }}</div>
                                     <div class="product-title-container">
-                                        <h6 class="product-title">
-                                            <a @click="openQuickView(product)">{{ product.Produto }}</a>
-                                        </h6>
+                                        <router-link :to="'/product/' + product.Cod + '/detail'">
+                                            <h6 class="product-title">
+                                                <a>{{ product.Produto }}</a>
+                                            </h6>
+                                        </router-link>
                                     </div>
                                 </div>
                                 <div class="product-card-info mt-3-negative">

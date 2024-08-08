@@ -20,7 +20,7 @@
         </div>
 
         <section class="product-details py-6" style="margin-top: 2em;">
-            <div class="container">
+            <div v-if="Object.values(product).length > 1" class="container">
                 <div class="row align-items-start">
                     <div class="col-lg-6 lightbox-gallery product-gallery sticky-lg-top">
                         <CarouselProduct :images="product.images"></CarouselProduct>
@@ -126,7 +126,8 @@
                                             class="bi bi-chevron-up"></i></a>
                                     <div class="collapse show" id="pd_description">
                                         <div class="pd-collapse-box">
-                                            <p>{{ product.details ? product.details.Descricao : 'Descrição Genérica' }}</p>
+                                            <p>{{ product.details ? product.details.Descricao : 'Descrição Genérica' }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -135,7 +136,8 @@
                                         aria-controls="pd_information">Informações <i class="bi bi-chevron-up"></i></a>
                                     <div class="collapse" id="pd_information">
                                         <div class="pd-collapse-box">
-                                            <p>{{ product.details ? product.details.Descricao : 'Informação genérica' }}</p>
+                                            <p>{{ product.details ? product.details.Descricao : 'Informação genérica' }}
+                                            </p>
                                             <!-- <table class="table text-sm small m-0 table-borderless">
                                                 <tbody>
                                                     <tr>
@@ -165,6 +167,9 @@
                         </div>
                     </div><!-- End Product Details -->
                 </div>
+            </div>
+            <div v-else class="row g-2 g-sm-3 g-lg-4 text-center" style='margin-top: 2em;'>
+                <h1>Carregando as informações do produto...</h1>
             </div>
         </section>
 
