@@ -4,7 +4,7 @@
         <MiniCart :cart="cart" @remove-product="removeProduct" @clear-cart="clearCart"></MiniCart>
         <AppMenu :cart="cart"></AppMenu>
         <Carousel></Carousel>
-        <section class="section" style="margin-top: 8em;">
+        <section class="section" style="margin-top: 5em; background-color: white;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 my-3 pe-lg-8">
@@ -15,7 +15,7 @@
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
-                    <div class="col-lg-6 my-3">
+                    <div class="col-lg-6 my-3" >
                         <h3 class="mb-2 h2">Contato</h3>
                         <form class="row g-3 pt-3">
                             <div class="col-md-12"><input type="text" class="form-control" id="type"

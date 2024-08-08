@@ -34,9 +34,10 @@ const routes = [
     { path: "/checkout", name: "Checkout", component: Checkout },
     { path: "/client-login", name: "Login", component: Login },
     { path: "/product", name: "Product", component: Product },
-    { path: "/product-detail/:id", name: "ProductDetail", component: ProductDetail },
+    { path: "/product/:id/detail",name: "ProductDetail", component: ProductDetail, props: true },
     { path: "/product/category/:category", name: "ProductCategory", component: Product },
     { path: "/product/category/:category/sub/:sub", name: "ProductCategorySub", component: Product },
+
     // {
     //     path: "/property_details/:id",
     //     name: "PropertyDetails",

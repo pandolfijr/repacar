@@ -36,4 +36,9 @@ class ProductServiceImpl implements ProductService
         return $this->productRepository->getSubCategory($subcategory);
     }
 
+    public function getProductById(string $id): Result
+    {
+        return $this->productRepository->getProductById($id);
+    }
+
 }

@@ -5,10 +5,10 @@
         <AppMenu :cart="cart"></AppMenu>
         <Carousel></Carousel>
         <section class="section" style="margin-top: 8em;">
-            <div class="container">
+            <div class="container" >
                 <div class="justify-content-center row">
                     <div class="col-lg-5 col-xxl-4">
-                        <div class="card">
+                        <div class="card" style="background-color: white;">
                             <div class="card-header bg-transparent py-3">
                                 <h3 class="h4 mb-0">Área do Cliente</h3>
                             </div>

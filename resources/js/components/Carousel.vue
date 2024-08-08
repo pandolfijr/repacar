@@ -7,7 +7,7 @@
         </Slide>
 
         <template #addons>
-            <Pagination />
+            <!-- <Pagination /> -->
         </template>
     </Carousel>
 </template>
@@ -28,11 +28,9 @@ export default defineComponent({
     data: function () {
         return {
             banners: [
-                '/assets/img/front/bg-banner-1.jpeg',
-                '/assets/img/front/bg-banner-2.jpeg',
-                '/assets/img/front/bg-banner-3.jpeg',
-                '/assets/img/front/bg-banner-4.jpeg',
-                '/assets/img/front/bg-banner-5.jpeg'
+                '/assets/img/front/bg-banner-1.png',
+                '/assets/img/front/bg-banner-2.png',
+                '/assets/img/front/bg-banner-3.png',
             ]
 
         };

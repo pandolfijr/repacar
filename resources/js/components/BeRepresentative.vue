@@ -5,7 +5,7 @@
         <AppMenu :cart="cart"></AppMenu>
         <Carousel></Carousel>
         <section class="section" style="margin-top: 8em;">
-            <div class="container">
+            <div class="container" style="background-color: white;">
                 <div class="row">
                     <div class="col-lg-6 my-3 pe-lg-8">
                         <h3 class="mb-2 h2">Seja nosso Representante</h3>

@@ -5,8 +5,8 @@
         <Carousel></Carousel>
 
         <section class="section" style="margin-top: 8em;">
-            <div class="container">
-                <div class="row" style="text-align: center;">
+            <div class="container" style="background-color: white;">
+                <div class="row" style="text-align: center; padding-top: 1em;" >
                     <h6 class="mb-3 text-gray-400">Nossa Missão</h6>
                     <h2 class="mb-4">Sobre a Repacar</h2>
                 </div>

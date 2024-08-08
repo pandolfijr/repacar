@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/{any}', function () {
+//     return view('form');
+// })->where('any', '.*');
+
 Route::get('/', function () {
     return view('form');
 });
@@ -40,7 +44,7 @@ Route::resource('/product', App\Http\Controllers\ProductController::class);
 Route::resource('/category', App\Http\Controllers\ProductCategoryController::class);
 Route::resource('/subcategory', App\Http\Controllers\ProductSubCategoryController::class);
 Route::resource('/budget', App\Http\Controllers\BudgetController::class);
-Route::get('/client/get-by-cnpj',[App\Http\Controllers\ClientController::class, 'getClientByCnpj']);
+Route::get('/client/get-by-cnpj', [App\Http\Controllers\ClientController::class, 'getClientByCnpj']);
 
 // Route::get('product', function () {
 //     return view('form');
@@ -48,7 +52,7 @@ Route::get('/client/get-by-cnpj',[App\Http\Controllers\ClientController::class, 
 Route::get('product/category/{category}', function () {
     return view('form');
 });
-Route::get('product-detail/{id}', function () {
+Route::get('product/{id}/detail', function () {
     return view('form');
 });
 Route::get('product/category/{category}/sub/{sub}', function () {

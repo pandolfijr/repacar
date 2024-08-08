@@ -104,4 +104,21 @@ class ProductRepositoryImpl implements ProductRepository
             );
         }
     }
+
+    public function getProductById(string $id): Result
+    {
+        try {
+
+            $product = Product::with(['images', 'stock', 'details'])->where('Cod', $id)->first();
+            return Result::success(['product' => $product]);
+        } catch (\Exception $e) {
+            return Result::error(
+                new ErrorApplication(
+                    'ProductRepository > getProductById',
+                    'Erro ao buscar categoria: ' . $e->getMessage(),
+                    500,
+                )
+            );
+        }
+    }
 }

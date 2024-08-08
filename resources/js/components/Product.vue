@@ -3,22 +3,26 @@
     <main>
         <MiniCart :cart="cart" @remove-product="removeProduct" @clear-cart="clearCart"></MiniCart>
         <AppMenu :cart="cart"></AppMenu>
-        <section class="section" style="margin-bottom: -7em; margin-top: 8em;">
-            <div class="container">
-                <div class="row justify-content-center mb-4">
-                    <div class="col-lg-6 text-center">
-                        <form class="position-relative w-100">
-                            <div class="mb-3 input-group">
-                                <input class="form-control shadow-none" type="text" name="search" v-model="filter"
-                                    placeholder="O que você está procurando?">
-                                <button type="button" class="btn btn-success shadow-none" @click="getProducts()">
-                                    <i class="fi-search"></i>
-                                </button>
-                            </div>
-                        </form>
+        <section class="section" style="margin-bottom: -7em; margin-top: 3.5em;">
+            <div class="bg-white-100" style="padding-top: 2em;">
+                <div class="container">
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-lg-6 text-center">
+                            <form class="position-relative w-100" @submit.prevent="handleSubmit">
+                                <div class="input-group mb-4">
+                                    <input class="form-control shadow-none" type="text" name="search" v-model="filter"
+                                        style="border-radius: 2em 0 0 2em; background-color: white;" placeholder="O que você está procurando?">
+                                    <button type="button" class="btn shadow-none"
+                                        style="border-radius: 0 2em 2em 0;background-color:white; border-color: #e3e9ef;" @click="getProducts()">
+                                        <i class="fi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </section>
         <!-- blog -->
         <section class="section">
@@ -36,25 +40,31 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div v-if="Object.values(products).length > 0" class="row g-2 g-sm-3 g-lg-4">
-                        <div v-for="product in products" :key="product.id" class="col-6 col-md-4 col-lg-3">
+                    <div v-if="Object.values(products).length > 0" class="row g-3"><!-- Product Box -->
+                        <div v-for="product in products" :key="product.id" class="col-sm-6 col-lg-3">
                             <div class="product-card-1">
                                 <div class="product-card-image">
+                                    <div class="badge-ribbon">
+                                        <span class="badge bg-success">Novo</span>
+                                    </div>
                                     <div class="product-action">
+
                                         <a @click="openQuickView(product)" class="btn btn-outline-success">
                                             <i class="fi-eye"></i>
                                         </a>
                                     </div>
                                     <div class="product-media">
-                                        <a @click="openQuickView(product)">
-                                            <img v-if="product.images && product.images.Caminho !== ''"
-                                                class="img-fluid" :src="product.images.Caminho" style=""
-                                                :alt="product.Produto">
-                                            <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
-                                                style="" :alt="product.Produto">
-                                        </a>
+                                        <router-link :to="'/product/' + product.Cod + '/detail'">
+                                            <div v-if="product.images.length > 0">
+                                                <img v-if="product.images[0] && product.images[0].Caminho !== ''"
+                                                    class="img-fluid product-image" :src="product.images[0].Caminho"
+                                                    :alt="product.Produto" />
+                                                <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
+                                                    :alt="product.Produto" />
+                                            </div>
+                                        </router-link>
                                         <div class="product-cart-btn">
-                                            <button @click="addToCart(product, product.quantity ?? 1)"
+                                            <button @click="addToCart(product, product.quantity ?? 0)"
                                                 class="btn btn-success btn-sm w-100">
                                                 <i class="fi-shopping-cart"></i> Adicionar ao Carrinho
                                             </button>
@@ -63,21 +73,18 @@
                                 </div>
                                 <div class="product-card-info">
                                     <div class="product-meta small">Cód: {{ product.Codigo }}</div>
-                                    <h6 class="product-title">
-                                        <a @click="openQuickView(product)">{{ product.Produto }}</a>
-                                    </h6>
-                                    <!-- <div class="product-price">
-                                            <span class="text-success"> R$ {{ product.Valor }} valor<small></small>
-                                            </span>
-                                        </div> -->
+                                    <div class="product-title-container">
+                                        <h6 class="product-title">
+                                            <a @click="openQuickView(product)">{{ product.Produto }}</a>
+                                        </h6>
+                                    </div>
                                 </div>
-
-                                <div class="product-card-info">
-                                    <span class="" style="margin-right: 1em;"> Qtd. {{ product.quantity ?
-                                        product.quantity : '1' }}</span>
+                                <div class="product-card-info mt-3-negative">
+                                    <span class="space-right" style=""> Qtd. {{ product.quantity ?
+                                        product.quantity : '0' }}</span>
                                     <button @click="incrementQuantity(product)"
                                         class="btn btn-outline-secondary btn-sm custom-btn rounded-circle padding-button"
-                                        style="margin-right: 0em;">
+                                        style="">
                                         <i class="bi bi-plus"></i>
                                     </button>
                                     <button @click="decrementQuantity(product)"
@@ -93,15 +100,13 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal -->
-                        <QuickView v-if="selectedProduct" :product="selectedProduct" @close="selectedProduct = null"
-                            :cart="cart" @add-to-cart="addToCart" @remove-product="removeProduct"
-                            @load-products="loadProductsFromLocalStorage" @increment-quantity="incrementQuantity"
-                            @decrement-quantity="decrementQuantity">
-                        </QuickView>
+
+                    </div>
+                    <div v-else-if="no_products" class="row g-2 g-sm-3 g-lg-4 text-center">
+                        <h1>Nenhum produto encontrado...</h1>
                     </div>
                     <div v-else class="row g-2 g-sm-3 g-lg-4 text-center">
-                        <h1>Nenhum produto encontrado</h1>
+                        <h1>Carregando produtos...</h1>
                     </div>
                 </div>
             </div>
@@ -130,6 +135,7 @@ export default {
             sub: this.$route.params.sub ? this.$route.params.sub : '',
             category: {},
             full_category: {},
+            no_products: false,
         };
     },
     computed: {
@@ -152,6 +158,9 @@ export default {
             })
                 .then(response => {
                     this.products = response.data.products.products;
+                    if (this.products.length == 0) {
+                        this.no_products = true;
+                    }
                 })
                 .catch(error => {
                     console.error('Houve um problema com a requisição:', error);
@@ -178,6 +187,15 @@ export default {
             });
         },
         addToCart(product, quantity) {
+            if (quantity === 0) {
+                return Swal.fire({
+                    position: "top-end",
+                    icon: "warning",
+                    title: 'Você não informou a quantidade',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
             const { Cod, Entrada, Codigo, Produto, NCM, Embalagem, Grupo, Peso, unidade, desativado, TipoPSO, origem, FabricacaoPropria, CodEFO, ProdPesavel, CodCat, CodSubCat, UnidadeTrib, images, stock } = product;
             const productToAdd = { Cod, Entrada, Codigo, Produto, NCM, Embalagem, Grupo, Peso, unidade, desativado, TipoPSO, origem, FabricacaoPropria, CodEFO, ProdPesavel, CodCat, CodSubCat, UnidadeTrib, images, quantity: quantity, stock };
             let products = JSON.parse(localStorage.getItem('cart')) || [];
@@ -313,5 +331,64 @@ export default {
 
 .padding-button {
     margin-left: 0.15rem !important;
+}
+
+.product-media {
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    background-color: #fff;
+    /* Cor de fundo branco para a borda */
+    border-radius: 8px;
+    /* Ajuste a borda como necessário */
+}
+
+.product-image {
+    max-width: 100%;
+    max-height: 200px;
+    /* Defina a altura máxima desejada */
+    object-fit: contain;
+    /* Ajusta a imagem para caber dentro da div sem distorcer */
+    border-radius: 8px;
+    /* Ajuste a borda como necessário */
+    background-color: #fff;
+    /* Cor de fundo branco para a borda */
+    padding: 1.5em;
+}
+
+.space-right {
+    margin-right: 1em;
+}
+
+.product-title-container {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 6em;
+    /* Define a altura fixa desejada */
+    overflow-y: auto;
+    /* Permite rolar o conteúdo excedente verticalmente */
+}
+
+.product-title {
+    padding: 0 10px;
+    /* Adicione padding para melhor espaçamento se necessário */
+
+}
+
+.product-title a {
+    margin-top: -2.5em;
+    display: block;
+    /* Garante que o link ocupe toda a altura disponível */
+    text-decoration: none;
+    /* Remove a sublinha do link */
+    color: inherit;
+    /* Mantém a cor do texto */
+}
+
+.mt-3-negative {
+    margin-top: -4em;
 }
 </style>

@@ -8,8 +8,8 @@
                     <div class="row text-center" style="">
                         <!-- Galeria de Produtos -->
                         <div class="col-lg-6 lightbox-gallery product-gallery d-flex justify-content-center align-items-center" style="padding:5em;">
-                            <img v-if="product.images && product.images.Caminho !== ''" class="img-fluid"
-                                :src="product.images.Caminho" :alt="product.Produto">
+                            <img v-if="product.images && product.images[0].Caminho !== ''" class="img-fluid"
+                                :src="product.images[0].Caminho" :alt="product.Produto">
                             <img v-else class="img-fluid" src="/public/assets/img/front/logo.png"
                                 :alt="product.Produto">
                         </div>
@@ -35,7 +35,7 @@
 
                                 <div class="product-card-info">
                                     <span class="" style="margin-right: 1em;"> Qtd. {{ product.quantity ?
-                                        product.quantity : '1' }}</span>
+                                        product.quantity : '0' }}</span>
                                     <button @click="incrementQuantity(product)"
                                         class="btn btn-outline-secondary btn-sm custom-btn rounded-circle padding-button"
                                         style="margin-right: 0em;">

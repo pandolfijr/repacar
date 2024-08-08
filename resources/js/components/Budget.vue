@@ -5,8 +5,8 @@
         <AppMenu :cart="cart"></AppMenu>
 
         <section class="section" style=" margin-top: 7em;">
-            <div class="container">
-                <div class="row gy-4"><!-- Itens do Carrinho -->
+            <div class="container" style="background-color: white;">
+                <div class="row gy-4"  style="background-color: white;"><!-- Itens do Carrinho -->
                     <div class="col-lg-8">
                         <div class="d-flex justify-content-between align-items-center pb-4 border-bottom mb-4">
                             <h2 class="h5 mb-0">Produtos</h2>
@@ -18,9 +18,9 @@
                             <div v-for="product in cart"
                                 class="d-flex align-items-center flex-row w-100 pb-3 mb-3 border-bottom">
                                 <a class="d-inline-block flex-shrink-0 me-3" href="#">
-                                    <img v-if="product.images && product.images.Caminho !== ''" class=""
-                                        width="100" :src="product.images.Caminho" :alt="product.Produto">
-                                    <img v-else class="" src="/public/assets/img/front/logo.png" width="100"
+                                    <img v-if="product.images && product.images[0].Caminho !== ''" class="img-default-product"
+                                        :src="product.images[0].Caminho" :alt="product.Produto">
+                                    <img v-else class="img-default-product" src="/public/assets/img/front/logo.png"
                                         :alt="product.Produto">
                                 </a>
                                 <div class="d-flex flex-column flex-sm-row col">
@@ -28,20 +28,29 @@
                                         <h3 class="product-title fs-5 mb-1">
                                             <p><span class="text-reset" href="#">{{ product.Produto }}</span></p>
                                         </h3>
+                                        <div class="row">
+                                            <div class="col-9" style="padding-left: 1.5em; margin-top:-1em;">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="text-body"><b>Cód:</b> {{ product.Codigo }}</span>
+                                                </div>
+                                                <div class="d-flex align-items-center" style="margin-top:-1em">
+                                                    <span class="text-body"><b>Quantidade:</b> {{ product.quantity }} |
+                                                    </span>
+                                                    <button class="btn btn-link px-0 text-success" type="button"
+                                                        style="" @click="removeProduct(product.Cod)">
+                                                        <i class="bi-trash3 me-2"></i>
+                                                        <span>Remover</span>
+                                                    </button>
+                                                </div>
 
-                                        <div class="d-flex align-items-center">
-                                            <span class="text-body">Cód: {{ product.Codigo }}</span>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <span class="text-body">Quantidade: {{ product.quantity }}</span>
+                                            </div>
+                                            <div class="col-3">
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="pt-2 pt-sm-0 d-flex d-sm-block ms-sm-auto">
-                                        <button class="btn btn-link px-0 text-success ms-auto" type="button" style="padding-top: 2em;"
-                                            @click="removeProduct(product.Cod)">
-                                            <i class="bi-trash3 me-2"></i>
-                                            <span>Remover</span>
-                                        </button>
+
                                     </div>
                                 </div>
                             </div>
@@ -53,8 +62,8 @@
 
                         <!-- Item-->
                     </div><!-- Barra lateral do carrinho -->
-                    <div class="col-lg-4 ps-xl-7"><!-- Estimativas de Envio -->
-                        <div class="card">
+                    <div class="col-lg-4 ps-xl-7" ><!-- Estimativas de Envio -->
+                        <div class="card" style="background-color: white;">
                             <div class="card-header bg-transparent py-3">
                                 <h6 class="m-0 h5">Total do Pedido</h6>
                             </div>
@@ -65,7 +74,8 @@
                                         <span class="text-mode">Quantidade de Itens</span>
                                     </div>
                                     <div class="col-4 text-end">
-                                        <span class="ml-auto">{{ typeof (cart) === 'object' && Object.values(cart).length > 0 ?
+                                        <span class="ml-auto">{{ typeof (cart) === 'object' &&
+                                            Object.values(cart).length > 0 ?
                                             sumQuantities() : 0 }}</span>
                                     </div>
                                 </div>
@@ -121,6 +131,15 @@ export default {
     },
     methods: {
         addToCart(product, quantity) {
+            if (quantity === 0) {
+                return Swal.fire({
+                    position: "top-end",
+                    icon: "warning",
+                    title: 'Você não informou a quantidade',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
             const { Cod, Entrada, Codigo, Produto, NCM, Embalagem, Grupo, Peso, unidade, desativado, TipoPSO, origem, FabricacaoPropria, CodEFO, ProdPesavel, CodCat, CodSubCat, UnidadeTrib, images, stock } = product;
             const productToAdd = { Cod, Entrada, Codigo, Produto, NCM, Embalagem, Grupo, Peso, unidade, desativado, TipoPSO, origem, FabricacaoPropria, CodEFO, ProdPesavel, CodCat, CodSubCat, UnidadeTrib, images, stock, quantity: quantity };
             let products = JSON.parse(localStorage.getItem('cart')) || [];
@@ -204,3 +223,10 @@ export default {
 
 };
 </script>
+
+<style>
+.img-default-product {
+    height: 7em;
+    width: 7em;
+}
+</style>

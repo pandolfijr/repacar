@@ -4,7 +4,7 @@
         <AppMenu :cart="cart"></AppMenu>
 
         <section class="section" style="margin-top: 8em">
-            <div class="container">
+            <div class="container" style="background-color: white;">
                 <div class="row align-items-start">
                     <div class="col-md-7">
                         <!-- Form -->
@@ -55,17 +55,17 @@
                         </form>
                     </div>
                     <div class="col-md-5 col-lg-4 offset-lg-1 sticky-lg-top sticky-lg-top-header"
-                        style="top: 114.406px">
+                        style="top: 114.406px" >
                         <ul class="list-group mb-6">
-                            <li v-for="product in cart" class="list-group-item p-3">
-                                <div class="row g-2">
-                                    <div class="col-3 col-md-2">
-                                        <img v-if="product.images && product.images.Caminho !== ''" class=""
-                                            :src="product.images.Caminho" :alt="product.Produto">
-                                        <img v-else class="" src="/public/assets/img/front/logo.png"
+                            <li v-for="product in cart" class="list-group-item p-3" style="background-color: white;">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <img v-if="product.images && product.images[0].Caminho !== ''" class="img-default-product"
+                                            :src="product.images[0].Caminho" :alt="product.Produto">
+                                        <img v-else class="img-default-product" src="/public/assets/img/front/logo.png"
                                             :alt="product.Produto">
                                     </div>
-                                    <div class="col">
+                                    <div class="col-8">
                                         <div class="fw-600">
                                             <a class="text-mode" href="#">{{ product.Produto }}</a>
                                         </div>
@@ -241,3 +241,10 @@ export default {
     },
 };
 </script>
+
+<style>
+.img-default-product {
+    max-height: 9em;
+    max-width: 8em;
+}
+</style>

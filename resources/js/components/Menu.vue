@@ -47,7 +47,7 @@
             </div>
 
             <nav class="navbar navbar-expand-lg navbar-light fixed-top"
-                style="background-color: white;margin-top:2.5em; margin-bottom: 3em;">
+                style="background-color: #fcfcfc;margin-top:2.5em; margin-bottom: 3em;">
                 <div class="container">
                     <!-- Logo -->
                     <a class="navbar-brand" href="/">

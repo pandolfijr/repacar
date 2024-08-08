@@ -27,20 +27,20 @@ class Product extends Model
         'codigobalanca', 'DescricaoANP', 'UnidadeTrib'
     ];
 
-    // public function prodcategory()
-    // {
-    //     return $this->belongsTo(ProductCategory::class, '')->withTrashed();
-    // }
-
     public function images()
     {
         // return $this->belongsTo(ProductImage::class, 'codigo', 'Codigo');
-        return $this->hasOne(ProductImage::class, 'codigo', 'Codigo');
+        return $this->hasMany(ProductImage::class, 'codigo', 'Codigo');
     }
 
 
     public function stock()
     {
         return $this->hasOne(ProductStock::class, 'codigo', 'Codigo');
+    }
+
+    public function details()
+    {
+        return $this->hasOne(ProductTechnicalInformation::class, 'Codigo', 'Codigo');
     }
 }

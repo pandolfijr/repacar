@@ -57,9 +57,20 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(string $id)
     {
-        //
+        try {
+
+            $result = $this->productService->getProductById($id);
+            if (!$result->isSuccess())
+                return response()->json(['message' => $result->getError()->getMessage()], $result->getError()->getCode());
+
+            $product = $result->getData()['product'];
+
+            return response()->json(['product' => $product], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     /**
