@@ -38,8 +38,6 @@ class ClientController extends Controller
      */
     public function getClientByCnpj(Request $request): JsonResponse
     {
-
-
         try {
             $input = $request->all();
             $result = $this->clientService->getClientByCnpj($input['cnpj']);
@@ -48,11 +46,9 @@ class ClientController extends Controller
 
             $client = $result->getData();
 
-            return response()->json(['client' => $client], 200);
+            return response()->json($client, 200);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-
-
 }

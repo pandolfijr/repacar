@@ -15,25 +15,37 @@
                                 referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
-                    <div class="col-lg-6 my-3" >
+                    <div class="col-lg-6 my-3">
                         <h3 class="mb-2 h2">Contato</h3>
-                        <form class="row g-3 pt-3">
-                            <div class="col-md-12"><input type="text" class="form-control" id="type"
-                                    placeholder="Nome Completo*">
+                        <div class="row g-3 pt-3">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" id="type" placeholder="Nome Completo*"
+                                    v-model="email.name">
                             </div>
                             <div class="col-md-6">
-                                <input type="email" class="form-control" id="inputEmail4" placeholder="E-mail*">
+                                <input type="email" class="form-control" id="inputEmail4" placeholder="E-mail*"
+                                    v-model="email.email">
 
                             </div>
                             <div class="col-6">
-                                <input type="text" class="form-control" id="inputAddress" placeholder="Telefone">
+                                <input type="text" class="form-control" id="inputAddress" placeholder="Telefone"
+                                    v-model="email.cellphone" v-mask="['(##) ####-####', '(##) #####-####']">
                             </div>
                             <div class="col-12">
-                                <textarea class="form-control" placeholder="Mensagem" id="floatingTextarea2" rows="4">
+                                <textarea class="form-control" placeholder="Mensagem" id="floatingTextarea2" rows="4"
+                                    v-model="email.message">
                                 </textarea>
                             </div>
-                            <div class="col-12"><button type="submit" class="btn btn-success">Enviar</button></div>
-                        </form>
+                            <div v-if="!loading" class="col-12">
+                                <button type="submit" class="btn btn-success" @click="sendEmail()"
+                                    :disabled="email.name == '' || email.message == '' || email.cellphone == '' || email.email == ''">Enviar</button>
+                            </div>
+
+                            <div v-if="loading" class="col-12 text-center">
+                                <div class="spinner"></div>
+                                <p>Enviando e-mail, por favor aguarde...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -97,13 +109,28 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Swal from 'sweetalert2';
 import MiniCart from './modal/MiniCart.vue';
 import AppMenu from './Menu.vue';
+import { onError } from '../utils';
 
 export default {
     data: function () {
         return {
             cart: [],
+            email: {
+                email: '',
+                name: '',
+                cellphone: '',
+                message: '',
+                template: 'contact'
+            },
+            message: '',
+            loading: false,
+            successMessage: '',
+            errorMessage: '',
+            onError: onError,
         };
     },
     computed: {
@@ -126,6 +153,36 @@ export default {
         clearCart() {
             localStorage.clear();
             this.cart = {};
+        },
+        sendEmail() {
+            this.loading = true;  // Inicia a animação de carregamento
+            this.successMessage = '';
+            this.errorMessage = '';
+            axios.post('/send-email', this.email)
+                .then(response => {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: response.data.message,
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                    setTimeout(() => {
+                        this.$router.push('/contact');
+                    }, 2500);
+                })
+                .catch(error => {
+                    this.loading = false;
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        title: error.response.data.message,
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                    console.error('Houve um problema com a requisição:', error);
+                });
+
         }
     },
     beforeMount() {
@@ -133,3 +190,22 @@ export default {
     },
 };
 </script>
+
+
+<style>
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #09f;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>

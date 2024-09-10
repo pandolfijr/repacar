@@ -10,6 +10,7 @@ use App\Interfaces\Repository\UserRepository;
 use App\Interfaces\Service\ClientService;
 use App\Interfaces\Service\ProductService;
 use App\Interfaces\Service\BudgetService;
+use App\Interfaces\Service\EmailService;
 use App\Interfaces\Service\UserService;
 use App\Repositories\ClientRepositoryImpl;
 use App\Repositories\ProductRepositoryImpl;
@@ -19,6 +20,7 @@ use App\Repositories\UserRepositoryImpl;
 use App\Services\ClientServiceImpl;
 use App\Services\ProductServiceImpl;
 use App\Services\BudgetServiceImpl;
+use App\Services\EmailServiceImpl;
 use Illuminate\Support\ServiceProvider;
 use App\Services\UserServiceImpl;
 
@@ -50,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BudgetRepository::class, BudgetRepositoryImpl::class);
 
         $this->app->bind(CompanyDataRepository::class, CompanyDataRepositoryImpl::class);
+        $this->app->bind(EmailService::class, EmailServiceImpl::class);
 
 
     }

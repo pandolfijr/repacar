@@ -45,8 +45,10 @@ class ClientRepositoryImpl implements ClientRepository
     public function saveClient(array $input): Result
     {
         try {
-            $client = Client::insertGetId($input);
-            return Result::success(['client' => $client]);
+            $client = new Client();
+            $client->fill($input);
+            $client->save();
+            return Result::success(['client' => $client->Cod]);
         } catch (\Exception $e) {
             return Result::error(
                 new ErrorApplication(

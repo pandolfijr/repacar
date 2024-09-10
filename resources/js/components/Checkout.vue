@@ -12,28 +12,45 @@
                             <!-- Heading -->
                             <h6 class="mb-4 h3">Detalhes do Orçamento</h6>
                             <!-- Billing details -->
+
                             <div class="row mb-5 gy-4">
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-12">
                                     <label class="form-label" for="cic">CNPJ*</label>
                                     <input class="form-control" id="cic" type="text" v-model="client.CIC"
                                         @blur="getClientByCnpj($event)" placeholder="Informe o CNPJ"
                                         v-mask="'##.###.###/####-##'" masked="false" />
+                                </div>
+
+                            </div>
+                            <div v-if="find_client" class="row" style="margin-top: -1em;margin-bottom: 1em;">
+                                <div class="col-sm-3 "></div>
+                                <div class="col-sm-1 ">
+                                    <div class="spinner"></div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label style="">Buscando Informações da Empresa</label>
+                                </div>
+                            </div>
+                            <div class="row mb-5 gy-4">
+                                <div class="col-12 col-md-6">
+                                    <label class="form-label" for="cliente">Nome do Responsável *</label>
+                                    <input class="form-control" id="cliente" type="text" v-model="client.cliente"
+                                        placeholder="Informe o Nome do Responsável" />
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <label class="form-label" for="email">E-mail*</label>
                                     <input class="form-control" id="email" type="email" v-model="client.email"
                                         placeholder="Informe o E-mail" />
                                 </div>
-                                <div class="col-12">
-                                    <label class="form-label" for="cliente">Nome do Responsável *</label>
-                                    <input class="form-control" id="cliente" type="text" v-model="client.cliente"
-                                        placeholder="Informe o Nome do Responsável" />
-                                </div>
+                            </div>
+                            <div class="row mb-5 gy-4">
                                 <div class="col-12">
                                     <label class="form-label" for="razao">Razão Social*</label>
                                     <input class="form-control" id="razao" type="text" v-model="client.razao"
                                         placeholder="Informe a Razão Social" />
                                 </div>
+                            </div>
+                            <div class="row mb-5 gy-4">
                                 <div class="col-6">
                                     <label class="form-label" for="cidade">Cidade *</label>
                                     <input class="form-control" id="cidade" type="text" v-model="client.cidade"
@@ -45,6 +62,8 @@
                                         placeholder="Informe o Telefone" v-model="client.telefone"
                                         v-mask="['(##) ####-####', '(##) #####-####']" masked="false" />
                                 </div>
+                            </div>
+                            <div class="row mb-5 gy-4">
                                 <div class="col-12">
                                     <label class="form-label" for="observation">Observação</label>
                                     <input class="form-control" id="observation" type="text"
@@ -55,13 +74,14 @@
                         </form>
                     </div>
                     <div class="col-md-5 col-lg-4 offset-lg-1 sticky-lg-top sticky-lg-top-header"
-                        style="top: 114.406px" >
+                        style="top: 114.406px">
                         <ul class="list-group mb-6">
                             <li v-for="product in cart" class="list-group-item p-3" style="background-color: white;">
                                 <div class="row">
                                     <div class="col-4">
-                                        <img v-if="product.images && product.images[0].Caminho !== ''" class="img-default-product"
-                                            :src="product.images[0].Caminho" :alt="product.Produto">
+                                        <img v-if="product.images && product.images[0].Caminho !== ''"
+                                            class="img-default-product" :src="product.images[0].Caminho"
+                                            :alt="product.Produto">
                                         <img v-else class="img-default-product" src="/public/assets/img/front/logo.png"
                                             :alt="product.Produto">
                                     </div>
@@ -101,9 +121,18 @@
                             </div>
                         </div>
                         <div class="pt-4">
+                            <div v-if="save_process" class="row" style="margin-bottom: 1em;">
+                                <div class="col-sm-2 "></div>
+                                <div class="col-sm-3 ">
+                                    <div class="spinner"></div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <label style="margin-top: 0.2em; margin-left: -2.5em">Gerando Orçamento...</label>
+                                </div>
+                            </div>
                             <button type="submit" class="btn btn-success w-100" @click="saveBudget()"
                                 :title="'Preencha os dados corretamente'"
-                                :disabled="Object.values(cart).length == 0 || client.CIC == '' || client.email == ''">
+                                :disabled="Object.values(cart).length == 0 || client.CIC == '' || client.email == '' || save_process">
                                 Enviar Orçamento
                             </button>
                         </div>
@@ -129,7 +158,9 @@ export default {
             client: {
 
             },
-            client_exists: false
+            client_exists: false,
+            save_process: false,
+            find_client: false,
         };
     },
     computed: {},
@@ -175,6 +206,7 @@ export default {
             this.loadProductsFromLocalStorage();
         },
         getClientByCnpj(event) {
+            this.find_client = true;
             let cnpj = event.target.value;
             if (!cnpj) return false;
             axios
@@ -182,12 +214,13 @@ export default {
                     params: { cnpj: cnpj },
                 })
                 .then((response) => {
-                    if (response.data.client.client) {
-                        console.log(response.data.client)
-                        this.client = response.data.client.client;
+                    if (response.data) {
+                        this.client = response.data;
                         this.client_exists = true;
+                        this.find_client = false;
                     } else {
                         this.client_exists = false;
+                        this.find_client = false;
                     }
                 })
                 .catch((error) => {
@@ -203,6 +236,7 @@ export default {
         },
 
         saveBudget() {
+            this.save_process = true;
             axios.post('/budget', {
                 client: this.client,
                 client_exists: this.client_exists,
@@ -217,12 +251,13 @@ export default {
                         timer: 2500
                     });
                     localStorage.clear();
+                    this.save_process = false;
                     setTimeout(() => {
                         this.$router.push('/');
                     }, 2500);
                 })
                 .catch(error => {
-
+                    this.save_process = false;
                     error = this.onError(error);
                     Swal.fire({
                         position: "top-end",
@@ -246,5 +281,20 @@ export default {
 .img-default-product {
     max-height: 9em;
     max-width: 8em;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    border-left-color: #079241;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 </style>

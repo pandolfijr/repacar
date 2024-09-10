@@ -59,4 +59,6 @@ Route::get('product/category/{category}/sub/{sub}', function () {
     return view('form');
 });
 
+Route::post('/send-email', [App\Http\Controllers\EmailController::class, 'sendEmail']);
+
 Auth::routes();
