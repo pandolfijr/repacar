@@ -8,44 +8,26 @@
             <div class="container">
                 <div class="justify-content-center row">
                     <div class="col-lg-5 col-xxl-4">
-                        <div class="card" style="background-color: white;">
+                        <div class="card">
                             <div class="card-header bg-transparent py-3">
-                                <h3 class="h4 mb-0">Área do Cliente</h3>
+                                <h3 class="h4 mb-0">Recuperar Senha</h3>
                             </div>
                             <div class="card-body">
-
                                 <div class="form-group mb-3">
-                                    <label for="site_User" class="form-label">Email
-                                        <span class="text-success">*</span>
+                                    <label for="email_1" class="form-label">Email
+                                        <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" id="site_User" class="form-control" placeholder="E-mail"
-                                        v-model="user.client.site_User">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <div class="row align-items-center">
-                                        <label class="form-label col" for="senha_User">Senha
-                                            <span class="text-success">*</span>
-                                        </label>
-                                    </div>
-                                    <input type="password" class="form-control" id="senha_User"
-                                        v-model="user.client.site_Senha" placeholder="*********">
-                                </div><!-- Checkbox -->
-                                <div v-if="login_process" class="row" style="margin-bottom: 1em;">
-                                    <div class="col-sm-2 "></div>
-                                    <div class="col-sm-3 ">
-                                        <div class="spinner"></div>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <label style="margin-top: 0.2em; margin-left: -2.5em">Acessando sua conta
-                                            ...</label>
-                                    </div>
+                                    <input type="text" id="email_1" class="form-control" placeholder="E-mail"
+                                        v-model="email">
                                 </div>
                                 <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-success w-100" @click="login()">Logar</button>
+                                    <button type="submit" class="btn btn-success w-100" @click="test()">Enviar
+                                        Link de
+                                        Recuperação</button>
                                 </div>
                                 <div class="pt-4 text-center">
-                                    <span class="text-muted">Esqueceu sua senha?
-                                        <router-link :to="'/recovery'">Clique aqui para recuperar.</router-link>
+                                    <span class="text-muted">Já tem uma conta?
+                                        <router-link :to="'/client-login'">Faça o login aqui.</router-link>
                                     </span>
                                 </div>
                             </div>
@@ -73,13 +55,7 @@ export default {
     data: function () {
         return {
             cart: [],
-            user: {
-                client: {
-                    site_Senha: '',
-                    site_User: '',
-                }
-            },
-            login_process: false,
+            email: '',
         };
     },
     computed: {
@@ -103,10 +79,9 @@ export default {
             localStorage.clear();
             this.cart = {};
         },
-        login() {
-            this.login_process = true;
-            if (this.user.client.site_Senha == '' || this.user.site_User == '') {
-                this.login_process = false;
+
+        test() {
+            if (this.email == '') {
                 return Swal.fire({
                     position: "top-end",
                     icon: "error",
@@ -115,24 +90,27 @@ export default {
                     timer: 2500
                 });
             }
-            axios.post('/login', this.user)
+            axios.post('/password/email', {
+                email: this.email
+            })
                 .then(response => {
-                    if (response.data.login == true) {
+
+                    if (response.status == 200) {
                         Swal.fire({
                             position: "top-end",
                             icon: "success",
-                            title: 'Login realizado com sucesso!',
+                            title: 'Email de Recuperação Enviado com Sucesso!!',
                             showConfirmButton: false,
                             timer: 1500
                         });
                         setTimeout(() => {
-                            this.$router.go();
+                            this.$router.push('/client-login');
                         }, 1500);
                     } else {
                         Swal.fire({
                             position: "top-end",
                             icon: "error",
-                            title: 'Erro ao realizar login',
+                            title: 'Erro ao enviar email de recuperação',
                             showConfirmButton: false,
                             timer: 2500
                         });
@@ -165,9 +143,9 @@ export default {
         }
     },
     beforeMount() {
-        console.log('loginbefore',)
-        this.validateSession()
-        this.loadProductsFromLocalStorage();
+        // console.log('loginbefore',)
+        // this.validateSession()
+        // this.loadProductsFromLocalStorage();
 
     },
 };

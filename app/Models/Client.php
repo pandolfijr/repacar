@@ -201,6 +201,8 @@ class Client extends Model
         'PrePgtoDiaSemana',
         'PrePgtoDataUnica',
         'WhatsAppNome',
-        'WhatsAppNumero'
+        'WhatsAppNumero',
+        'site_User',
+        'site_Senha'
     ];
 }

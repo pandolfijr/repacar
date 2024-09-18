@@ -39,6 +39,17 @@ Route::get('/checkout', function () {
 Route::get('/client-login', function () {
     return view('form');
 });
+Route::get('/orders', function () {
+    return view('form');
+});
+
+Route::get('/recovery', function () {
+    return view('form');
+});
+
+Route::get('/update/password', function () {
+    return view('form');
+});
 
 Route::resource('/product', App\Http\Controllers\ProductController::class);
 Route::resource('/category', App\Http\Controllers\ProductCategoryController::class);
@@ -60,5 +71,6 @@ Route::get('product/category/{category}/sub/{sub}', function () {
 });
 
 Route::post('/send-email', [App\Http\Controllers\EmailController::class, 'sendEmail']);
+Route::post('/update-password', [App\Http\Controllers\UserController::class, 'updatePassword']);
 
 Auth::routes();

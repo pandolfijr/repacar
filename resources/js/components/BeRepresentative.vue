@@ -59,6 +59,12 @@ import AppMenu from './Menu.vue';
 import { onError } from '../utils';
 
 export default {
+    props: {
+        userData: {
+            type: Object,
+            required: true
+        }
+    },
     data: function () {
         return {
             cart: [],

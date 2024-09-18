@@ -32,6 +32,9 @@ class SendMail extends Mailable
     {
         return $this->subject('Test Email')
             ->view('emails.contact')
-            ->with('details', $this->details); // Passa os detalhes para o template
+            ->with([
+                'text' => $this->details['text'],
+                'url' => $this->details['url'],
+            ]);
     }
 }

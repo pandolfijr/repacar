@@ -35,7 +35,7 @@
 
                                 <div class="product-card-info">
                                     <span class="" style="margin-right: 1em;"> Qtd. {{ product.quantity ?
-                                        product.quantity : '0' }}</span>
+                                        product.quantity : '1' }}</span>
                                     <button @click="incrementQuantity(product)"
                                         class="btn btn-outline-secondary btn-sm custom-btn rounded-circle padding-button"
                                         style="margin-right: 0em;">

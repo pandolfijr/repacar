@@ -63,11 +63,53 @@
                                         v-mask="['(##) ####-####', '(##) #####-####']" masked="false" />
                                 </div>
                             </div>
+
                             <div class="row mb-5 gy-4">
-                                <div class="col-12">
+                                <div class="col-9">
                                     <label class="form-label" for="observation">Observação</label>
                                     <input class="form-control" id="observation" type="text"
                                         v-model="client.observation" placeholder="Faça uma observação" />
+                                </div>
+                                <div v-if="client.CIC && client.CIC.length >= 18 && client.user_exists === false"
+                                    class="col-3">
+                                    <div style="margin-top: 3em;">
+                                        <input id="observation" type="checkbox" v-model="create_user"
+                                            placeholder="Faça uma observação" @click="treatCreateUser()" />
+                                        <label class="form-label" for="observation" style="margin-left: 1em;">Criar
+                                            Usuário</label>
+                                    </div>
+                                </div>
+                                <div v-else-if="client.user_exists === true" class="col-3">
+                                    <div style="margin-top: 3em;">
+                                        <input id="observation" type="checkbox" v-model="user_login"
+                                            placeholder="Faça uma observação" @click="treatCreateUser()" />
+                                        <label class="form-label" for="observation" style="margin-left: 1em;">Fazer
+                                            Login</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="create_user" class="row mb-5 gy-4">
+                                <div class="col-6">
+                                    <label class="form-label" for="site_User">Usuário para Acesso*</label>
+                                    <input class="form-control" id="site_User" type="text" v-model="client.site_User"
+                                        placeholder="Digite um usuário" />
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label" for="site_Senha">Digite uma Senha*</label>
+                                    <input class="form-control" id="site_Senha" type="password"
+                                        placeholder="Digite uma Senha" v-model="client.site_Senha" />
+                                </div>
+                            </div>
+                            <div v-else-if="user_login" class="row mb-5 gy-4">
+                                <div class="col-6">
+                                    <label class="form-label" for="site_User">Usuário para Acesso*</label>
+                                    <input class="form-control" id="site_User" type="text" v-model="client.site_User"
+                                        :disabled="client.email == ''" placeholder="Digite um usuário" />
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label" for="site_Senha">Informe sua Senha*</label>
+                                    <input class="form-control" id="site_Senha" type="password"
+                                        placeholder="Digite uma Senha" v-model="login_password" />
                                 </div>
                             </div>
                             <!-- Heading -->
@@ -130,9 +172,17 @@
                                     <label style="margin-top: 0.2em; margin-left: -2.5em">Gerando Orçamento...</label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-success w-100" @click="saveBudget()"
+
+                            <button v-if="client.user_exists === true && user_login === true" type="submit"
+                                class="btn btn-success w-100" @click="saveBudget(true)"
                                 :title="'Preencha os dados corretamente'"
-                                :disabled="Object.values(cart).length == 0 || client.CIC == '' || client.email == '' || save_process">
+                                :disabled="Object.values(cart).length == 0 || client.CIC == '' || client.email == '' || save_process || (user_login && client.site_User == '' || user_login && login_password == '')">
+                                Enviar Orçamento e Fazer Login
+                            </button>
+
+                            <button v-else type="submit" class="btn btn-success w-100" @click="saveBudget(false)"
+                                :title="'Preencha os dados corretamente'"
+                                :disabled="Object.values(cart).length == 0 || client.CIC == '' || client.email == '' || save_process || (create_user && client.site_User == '' || client.site_Senha == '')">
                                 Enviar Orçamento
                             </button>
                         </div>
@@ -151,6 +201,15 @@ import AppMenu from "./Menu.vue";
 import { onError } from '../utils';
 
 export default {
+    props: {
+        userData: {
+            type: Object,
+            required: true
+        }
+    },
+    mounted() {
+        console.log('Dados da sessão:', this.userData);
+    },
     data: function () {
         return {
             onError: onError,
@@ -158,9 +217,12 @@ export default {
             client: {
 
             },
+            create_user: false,
+            user_login: false,
             client_exists: false,
             save_process: false,
             find_client: false,
+            login_password: '',
         };
     },
     computed: {},
@@ -217,11 +279,10 @@ export default {
                     if (response.data) {
                         this.client = response.data;
                         this.client_exists = true;
-                        this.find_client = false;
                     } else {
                         this.client_exists = false;
-                        this.find_client = false;
                     }
+                    this.find_client = false;
                 })
                 .catch((error) => {
                     console.error("Houve um problema com a requisição:", error);
@@ -234,35 +295,68 @@ export default {
         sumQuantities() {
             return this.cart.reduce((total, item) => total + item.quantity, 0) ?? 0;
         },
+        treatCreateUser() {
+            console.log(this.create_user);
+            console.log(this.client);
 
-        saveBudget() {
+            if (this.create_user === false) {
+                this.client.site_User = this.client.email;
+            } else {
+                delete (this.client.site_User);
+            }
+        },
+        saveBudget(login) {
             this.save_process = true;
-            axios.post('/budget', {
-                client: this.client,
-                client_exists: this.client_exists,
-                cart: this.cart
-            })
-                .then(response => {
-                    Swal.fire({
+            if (this.user_login === true) {
+                if (this.login_password == '') {
+                    return Swal.fire({
                         position: "top-end",
-                        icon: "success",
-                        title: response.data.message,
+                        icon: "error",
+                        title: 'Informe a Senha',
                         showConfirmButton: false,
                         timer: 2500
                     });
+                } else {
+                    this.client.site_Senha = this.login_password;
+                }
+            }
+
+            axios.post('/budget', {
+                client: this.client,
+                client_exists: this.client_exists,
+                cart: this.cart,
+                login: login
+            })
+                .then(response => {
+                    console.log(response.data.login);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: response.data.login == true ? "success" : 'warning',
+                        title: response.data.message,
+                        showConfirmButton: false,
+                        timer: response.data.login == true ? 2500 : 3500
+                    });
                     localStorage.clear();
                     this.save_process = false;
-                    setTimeout(() => {
-                        this.$router.push('/');
-                    }, 2500);
+                    if (response.data.login == false) {
+                        setTimeout(() => {
+                            this.$router.push('/');
+                        }, 2500);
+                    } else {
+                        setTimeout(() => {
+                            this.$router.push({ path: '/orders', query: { reload: true } });
+                        }, 2500);
+                    }
+
                 })
                 .catch(error => {
                     this.save_process = false;
-                    error = this.onError(error);
+                    // console.log(error)
+                    // error = this.onError(error);
                     Swal.fire({
                         position: "top-end",
                         icon: "error",
-                        title: error.message,
+                        title: error.response.data.message,
                         showConfirmButton: false,
                         timer: 2500
                     });

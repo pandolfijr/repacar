@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\Service\BudgetService;
+use App\Interfaces\Service\UserService;
 use App\Models\Budget;
 use Exception;
 use Illuminate\Http\Request;
@@ -10,14 +11,16 @@ use Illuminate\Http\Request;
 class BudgetController extends Controller
 {
     private $budgetService;
+    private $userService;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(BudgetService $budgetService)
+    public function __construct(BudgetService $budgetService, UserService $userService)
     {
         $this->budgetService = $budgetService;
+        $this->userService = $userService;
     }
 
     /**
@@ -25,9 +28,19 @@ class BudgetController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        try {
+            $input = $request->all();
+            $result = $this->budgetService->getBudgets($input);
+            if (!$result->isSuccess())
+                return response()->json(['message' => $result->getError()->getMessage()], $result->getError()->getCode());
+
+            $budgets = $result->getData();
+            return response()->json(['budgets' => $budgets], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -47,12 +60,12 @@ class BudgetController extends Controller
             'cart' => 'carrinho(produtos)',
         ];
         $request->validate([
-            'client.telefone' => 'string|required|max:100',
-            'client.cidade' => 'string|required|max:50',
-            'client.razao' => 'string|required|max:100',
-            'client.cliente' => 'string|required|max:100',
-            'client.email' => 'string|required|email|max:1000',
-            'client.CIC' => 'string|required|max:18',
+            'client.telefone' => 'required|string|max:100',
+            'client.cidade' => 'required|string|max:50',
+            'client.razao' => 'required|string|max:100',
+            'client.cliente' => 'required|string|max:100',
+            'client.email' => 'required|string|email|max:1000',
+            'client.CIC' => 'required|string|max:18',
             'cart' => ['required', 'array', 'min:1'],
         ], [], $customAttributes);
 
@@ -65,7 +78,9 @@ class BudgetController extends Controller
             if (!$result->isSuccess())
                 return response()->json(['message' => $result->getError()->getMessage()], $result->getError()->getCode());
 
-            return response()->json(['message' => 'Orçamento enviado com sucesso!'], 200);
+            $save = $result->getData()['login'];
+
+            return response()->json(['message' => 'Orçamento enviado com sucesso!', 'login' => $save], 200);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

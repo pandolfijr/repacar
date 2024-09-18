@@ -35,8 +35,13 @@ class ClientServiceImpl implements ClientService
             if (empty($array_client)) {
                 $cnpj_replace = preg_replace('/[^0-9]/', '', $cnpj);
                 if (strlen($cnpj_replace) != 14)
-                    return response()->json(['error' => 'CNPJ inválido'], 400);
-
+                    return Result::error(
+                        new ErrorApplication(
+                            'BudgetServiceImpl > saveBudget',
+                            'CNPJ incorreto: ',
+                            400,
+                        )
+                    );
 
                 $client = new Client();
                 $url = "https://www.receitaws.com.br/v1/cnpj/{$cnpj_replace}";
@@ -49,19 +54,19 @@ class ClientServiceImpl implements ClientService
 
                 $statusCode = $response->getStatusCode();
 
-
-                if ($statusCode != 200) return Result::success(
-                    [
-                        'CIC' => $cnpj,
-                        'cliente' => null,
-                        'email' => null,
-                        'razao' => null,
-                        'cidade' => null,
-                        'telefone' => null
-                    ]
-                );
-
                 $result_http = json_decode($response->getBody(), true);
+                if ($statusCode != 200 || $result_http['status'] == 'ERROR') {
+                    return Result::success(
+                        [
+                            'CIC' => $cnpj,
+                            'cliente' => null,
+                            'email' => null,
+                            'razao' => null,
+                            'cidade' => null,
+                            'telefone' => null
+                        ]
+                    );
+                }
 
                 if (!empty($result_http['qsa'])) {
                     $name = $result_http['qsa'][0]['nome'] ?? null;
@@ -75,7 +80,9 @@ class ClientServiceImpl implements ClientService
                     'cidade' => $result_http['municipio'] ?? null,
                     'telefone' => $result_http['telefone'] ?? null
                 ];
-
+                $array_client['user_exists'] = false;
+            } else {
+                $array_client['user_exists'] = $array_client['site_User'] != null && $array_client['site_Senha'];
             }
             return Result::success($array_client);
         } catch (Exception $e) {

@@ -8,31 +8,46 @@ use App\Interfaces\Repository\ClientRepository;
 use App\Interfaces\Repository\BudgetRepository;
 use App\Interfaces\Repository\CompanyDataRepository;
 use App\Interfaces\Service\BudgetService;
+use App\Interfaces\Service\ClientService;
+use App\Interfaces\Service\UserService;
 use App\Models\Budget;
 use App\Models\CompanyData;
+use App\Models\DetailedBudget;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class BudgetServiceImpl implements BudgetService
 {
     private $budgetRepository;
     private $clientRepository;
     private $companyDataRepository;
+    private $userService;
 
     public function __construct(
         BudgetRepository $budgetRepository,
         ClientRepository $clientRepository,
-        CompanyDataRepository $companyDataRepository
+        CompanyDataRepository $companyDataRepository,
+        UserService $userService
     ) {
         $this->budgetRepository = $budgetRepository;
         $this->clientRepository = $clientRepository;
         $this->companyDataRepository = $companyDataRepository;
+        $this->userService = $userService;
+    }
+
+    public function getBudgets(array $input): Result
+    {
+        return $this->budgetRepository->getBudgets($input);
     }
     public function saveBudget(array $input): Result
     {
         return DB::transaction(function () use ($input) {
+            $login = false;
+
+
             $result_company_data = $this->companyDataRepository->getCompanyData();
             if (!$result_company_data->isSuccess()) {
                 return Result::error(
@@ -46,13 +61,35 @@ class BudgetServiceImpl implements BudgetService
 
             $company_data = $result_company_data->getData()['company'];
 
-            if(isset($input['client']['Cod']) && !empty($input['client']['Cod'])) {
+
+
+            if (isset($input['client']['Cod']) && !empty($input['client']['Cod'])) {
                 $id_client = $input['client']['Cod'];
+                if ($input['client']['user_exists'] == false && $input['client']['site_User'] != '' &&  $input['client']['site_Senha'] != '') {
+                    $array_login = [
+                        'site_User' => $input['client']['site_User'],
+                        'site_Senha' => Hash::make($input['client']['site_Senha'])
+                    ];
+
+                    $result_update = $this->clientRepository->updateClient($array_login, $id_client);
+
+                    if (!$result_update->isSuccess())
+                        return Result::error(
+                            new ErrorApplication(
+                                'BudgetServiceImpl > saveBudget -> updateClient',
+                                $result_update->getError()->getMessage(),
+                                400,
+                            )
+                        );
+
+                    $input['login'] = true;
+                }
             } else {
                 $array_client = [
                     'CodEFO' => $company_data['CodEFO'],
                     'TipoCadastro' => 'Cliente',
                     'Indice' => 0,
+                    'email' => $input['client']['email'],
                     'Entrada' => Carbon::now()->format('Y-m-d H:i:s'),
                     'Credito' => 0,
                     'ImprimirEtiqueta' => 0,
@@ -93,6 +130,8 @@ class BudgetServiceImpl implements BudgetService
                     'JanelaParaOBSemMovimentacoes' => 0,
                     'PrePgtoFixarDiaSemana' => 0,
                     'Data_Sync' => Carbon::now()->format('Y-m-d H:i:s'),
+                    'site_User' => $input['client']['site_User'] ?? null,
+                    'site_Senha' => $input['client']['site_Senha'] ? Hash::make($input['client']['site_Senha']) : null,
                 ];
 
                 $final_array = array_merge($input['client'], $array_client);
@@ -107,6 +146,21 @@ class BudgetServiceImpl implements BudgetService
                     );
                 }
                 $id_client = $result->getData()['client'];
+                $login = true;
+            }
+
+            if ($input['login']) {
+                $result_user = $this->userService->login($input);
+
+                if (!$result_user->isSuccess())
+                    return Result::error(
+                        new ErrorApplication(
+                            'BudgetServiceImpl > saveBudget -> login',
+                            'Usuário ou Senha Incorretos',
+                            400,
+                        )
+                    );
+                $login = true;
             }
 
             $result_last_cod = $this->budgetRepository->getLastCodDetailedBudget();
@@ -170,8 +224,7 @@ class BudgetServiceImpl implements BudgetService
                     )
                 );
             }
-
-            return Result::success();
+            return Result::success(['login' => $login]);
         });
     }
 

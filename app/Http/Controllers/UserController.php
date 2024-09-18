@@ -146,4 +146,16 @@ class UserController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+
+    public function updatePassword(Request $request)
+    {
+        $input = $request->all();
+
+        $result_user = $this->userService->updatePassword($input);
+        if (!$result_user->isSuccess())
+            return response()->json(['message' => $result_user->getError()->getMessage()], $result_user->getError()->getCode());
+
+        return response()->json(['message' => 'Senha alterada com sucesso!'], 200);
+    }
 }

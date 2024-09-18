@@ -117,6 +117,12 @@ import MiniCart from './modal/MiniCart.vue';
 import AppMenu from './Menu.vue';
 
 export default {
+    props: {
+        userData: {
+            type: Object,
+            required: true
+        }
+    },
     data: function () {
         return {
             cart: [],

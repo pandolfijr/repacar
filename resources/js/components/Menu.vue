@@ -124,7 +124,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end mt-2 shadow"
                                 aria-labelledby="dropdown_myaccount">
-                                <a class="dropdown-item" href="/client-login">Minha Conta</a>
+                                <a class="dropdown-item" href="/client-login">Minha Conta {{userData}}</a>
                             </div>
                         </div>
                         <div class="nav-item">
@@ -156,7 +156,11 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 export default {
     props: {
-        cart: {}
+        cart: {},
+        userData: {
+            type: Object,
+            required: true
+        }
     },
     data: function () {
         return {
@@ -205,6 +209,22 @@ export default {
                 $(this).next('.dropdown-menu').toggleClass("show");
                 $(this).toggleClass("open");
             });
+        },
+        setup() {
+            const router = useRouter();
+
+            const logout = async () => {
+                try {
+                    await axios.post('/logout');
+                    this.$router.push('/client-login');
+                } catch (error) {
+                    console.error('Erro ao fazer logout', error);
+                }
+            };
+
+            return {
+                logout
+            };
         }
     },
     mounted() {

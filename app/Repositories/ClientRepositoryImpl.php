@@ -59,4 +59,22 @@ class ClientRepositoryImpl implements ClientRepository
             );
         }
     }
+
+    public function updateClient(array $input, string $id_user): Result
+    {
+        try {
+            $client = Client::where('Cod', $id_user)->first();
+            $client->fill($input);
+            $client->save();
+            return Result::success();
+        } catch (\Exception $e) {
+            return Result::error(
+                new ErrorApplication(
+                    'UserRepository > updateClient',
+                    'Erro ao atualizar cliente: ' . $e->getMessage(),
+                    500,
+                )
+            );
+        }
+    }
 }

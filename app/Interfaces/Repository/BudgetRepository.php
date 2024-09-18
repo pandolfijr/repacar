@@ -10,5 +10,6 @@ interface BudgetRepository
     public function getLastCodDetailedBudget(): Result;
     public function getProductsByIdBudget(string $id_budget): Result;
     public function saveBudgetDet(array $input): Result;
+    public function getBudgets(array $input): Result;
 
 }

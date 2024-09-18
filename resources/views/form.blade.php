@@ -5,7 +5,18 @@
     <div class="content-wrapper">
         <div id="app" class="d-flex flex-column min-vh-70">
             @yield('content')
-            <router-view></router-view>
+            <router-view
+                :user-data="{{ json_encode([
+                    'Cod' => session('Cod') ?? null,
+                    'cliente' => session('cliente') ?? null,
+                    'razao' => session('razao') ?? null,
+                    'endereco' => session('endereco') ?? null,
+                    'telefone' => session('telefone') ?? null,
+                    'CIC' => session('CIC') ?? null,
+                    'Cep' => session('Cep') ?? null,
+                    'email' => session('email') ?? null,
+                    'site_User' => session('site_User') ?? null,
+                ]) }}"></router-view>
 
         </div>
     </div>

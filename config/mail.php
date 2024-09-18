@@ -14,6 +14,8 @@ return [
     */
 
     'default' => env('MAIL_MAILER', 'smtp'),
+    'log_channel' => env('MAIL_LOG_CHANNEL', 'stack'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -72,7 +74,7 @@ return [
 
         'log' => [
             'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL'),
+            'channel' => env('MAIL_ '),
         ],
 
         'array' => [

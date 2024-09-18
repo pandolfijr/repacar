@@ -9,9 +9,30 @@ use App\Interfaces\Repository\BudgetRepository;
 use App\Models\Budget;
 use App\Models\Client;
 use App\Models\DetailedBudget;
+use Exception;
 
 class BudgetRepositoryImpl implements BudgetRepository
 {
+    public function getBudgets(array $input): Result
+    {
+        try {
+            $result = DetailedBudget::with('products')->orderByDesc('Cod');
+            if ($input['Cod'] != '')
+                $result->where('Cliente', $input['Cod']);
+
+            $budget = $result->get();
+            return Result::success($budget);
+        } catch (Exception $e) {
+            return Result::error(
+                new ErrorApplication(
+                    'BudgetServiceImpl > getBudgets',
+                    'Erro ao buscar pedidos:' . $e->getMessage(),
+                    500,
+                )
+            );
+        }
+    }
+
     public function saveBudget(array $input): Result
     {
         try {

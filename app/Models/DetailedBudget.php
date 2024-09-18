@@ -410,4 +410,9 @@ class DetailedBudget extends Model
         'LocacaoHoraFinal',
         'Prioridade'
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Budget::class, 'Pedido', 'Pedido');
+    }
 }

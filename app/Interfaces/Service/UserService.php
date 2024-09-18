@@ -14,4 +14,8 @@ interface UserService
     public function getUserById(string $id): Result;
     public function deleteUser(string $id_user): Result;
     public function restoreUser(string $id_user): Result;
+    public function login(array $input): Result;
+    public function logout(array $input): Result;
+    public function userExists(array $input): Result;
+    public function updatePassword(array $input): Result;
 }

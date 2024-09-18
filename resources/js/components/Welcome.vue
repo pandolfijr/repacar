@@ -96,7 +96,7 @@
                             </div>
                             <div class="product-card-info mt-3-negative">
                                 <span class="space-right" style=""> Qtd. {{ product.quantity ?
-                                    product.quantity : '0' }}</span>
+                                    product.quantity : '1' }}</span>
                                 <button @click="incrementQuantity(product)"
                                     class="btn btn-outline-secondary btn-sm custom-btn rounded-circle padding-button"
                                     style="">
@@ -271,6 +271,12 @@ import AppMenu from './Menu.vue';
 import Carousel from './Carousel.vue';
 
 export default {
+    props: {
+        userData: {
+            type: Object,
+            required: true
+        }
+    },
     data: function () {
         return {
             products: {},
@@ -369,7 +375,7 @@ export default {
         },
         incrementQuantity(product) {
             if (typeof product.quantity !== 'number' || isNaN(product.quantity)) {
-                product.quantity = 0;
+                product.quantity = 1;
             }
             product.quantity++;
             this.loadProductsFromLocalStorage();

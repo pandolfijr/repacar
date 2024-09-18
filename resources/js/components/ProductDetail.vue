@@ -85,7 +85,7 @@
                             <div class="product-detail-actions d-flex flex-wrap pt-3">
                                 <div class="product-card-info space-right">
                                     <span class="space-right" style=""> Qtd. {{ product.quantity ?
-                                        product.quantity : '0' }}</span>
+                                        product.quantity : '1' }}</span>
                                     <button @click="incrementQuantity(product)"
                                         class="btn btn-outline-secondary btn-sm custom-btn rounded-circle padding-button"
                                         style="">
@@ -187,6 +187,12 @@ import CarouselProduct from './CarouselProduct.vue';
 
 
 export default {
+    props: {
+        userData: {
+            type: Object,
+            required: true
+        }
+    },
     data: function () {
         return {
             product: {
@@ -300,7 +306,7 @@ export default {
         },
         incrementQuantity(product) {
             if (typeof product.quantity !== 'number' || isNaN(product.quantity)) {
-                product.quantity = 0;
+                product.quantity = 1;
             }
             product.quantity++;
             this.loadProductsFromLocalStorage();

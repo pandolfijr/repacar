@@ -15,7 +15,7 @@ class EmailServiceImpl implements EmailService
     public function sendMail(array $input, string $template, string $email_to): Result
     {
         try {
-            Mail::to('contato@pandolfi.dev.br')->send(new SendMail($input));
+            Mail::to($email_to)->send(new SendMail($input));
             return Result::success();
         } catch (Exception $e) {
             return Result::error(
