@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Mail\SendMail;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,3 +75,14 @@ Route::post('/send-email', [App\Http\Controllers\EmailController::class, 'sendEm
 Route::post('/update-password', [App\Http\Controllers\UserController::class, 'updatePassword']);
 
 Auth::routes();
+
+Route::get('/test-email', function () {
+    $input = [
+        'message' => 'Este é um e-mail de teste.',
+        'url' => 'https://seuapp.com.br/reset-password'
+    ];
+
+    Mail::to('jeancarlojr@live.com')->send(new SendMail($input));
+
+    return 'Email enviado com sucesso!';
+});

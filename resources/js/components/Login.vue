@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-success w-100" @click="login()">Logar</button>
+                                    <button type="submit" class="btn btn-success w-100" @click="login()" :disabled="login_process">Logar</button>
                                 </div>
                                 <div class="pt-4 text-center">
                                     <span class="text-muted">Esqueceu sua senha?

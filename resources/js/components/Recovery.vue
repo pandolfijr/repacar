@@ -20,8 +20,17 @@
                                     <input type="text" id="email_1" class="form-control" placeholder="E-mail"
                                         v-model="email">
                                 </div>
+                                <div v-if="login_process" class="row" style="margin-bottom: 1em;">
+                                    <div class="col-sm-2 "></div>
+                                    <div class="col-sm-3 ">
+                                        <div class="spinner"></div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <label style="margin-top: 0.2em; margin-left: -2.5em">Preparando envio de e-mail</label>
+                                    </div>
+                                </div>
                                 <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-success w-100" @click="test()">Enviar
+                                    <button type="submit" class="btn btn-success w-100" @click="recovery()" :disabled="login_process">Enviar
                                         Link de
                                         Recuperação</button>
                                 </div>
@@ -56,6 +65,7 @@ export default {
         return {
             cart: [],
             email: '',
+            login_process: false,
         };
     },
     computed: {
@@ -80,8 +90,10 @@ export default {
             this.cart = {};
         },
 
-        test() {
+        recovery() {
+            this.login_process = true;
             if (this.email == '') {
+                this.login_process = false;
                 return Swal.fire({
                     position: "top-end",
                     icon: "error",
@@ -94,7 +106,7 @@ export default {
                 email: this.email
             })
                 .then(response => {
-
+                    this.login_process = false;
                     if (response.status == 200) {
                         Swal.fire({
                             position: "top-end",
@@ -107,6 +119,7 @@ export default {
                             this.$router.push('/client-login');
                         }, 1500);
                     } else {
+                        this.login_process = false;
                         Swal.fire({
                             position: "top-end",
                             icon: "error",

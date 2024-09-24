@@ -30,10 +30,10 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Test Email')
+        return $this->subject('Repacar - Soluções em Reparos')
             ->view('emails.contact')
             ->with([
-                'text' => $this->details['text'],
+                'text' => $this->details['message'],
                 'url' => $this->details['url'],
             ]);
     }

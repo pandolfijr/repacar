@@ -58,7 +58,7 @@ class ForgotPasswordController extends Controller
 
                 $token = Crypt::encryptString(json_encode($data));
                 $url = url('/update/password?token=' . urlencode($token));
-                $input['text'] = 'Clique no link abaixo para redefinir sua senha: ';
+                $input['message'] = 'Clique no link abaixo para redefinir sua senha: ';
                 $input['url'] = getenv('APP_URL') . $url;
                 $this->emailService->sendMail($input, '', $input['email']);
                 return response()->json(['message' => 'Email enviado com sucesso!'], 200);
